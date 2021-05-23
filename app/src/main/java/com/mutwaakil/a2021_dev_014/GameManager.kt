@@ -50,7 +50,7 @@ class GameManager {
         currentPlayer = 1
     }
 
-    
+
     private fun hasGameEnded(): WinningLine? {
         if (state[0][0] == currentPlayer && state[0][1] == currentPlayer && state[0][2] == currentPlayer) {
             return WinningLine.ROW_0
