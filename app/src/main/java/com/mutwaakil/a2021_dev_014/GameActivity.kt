@@ -2,8 +2,10 @@ package com.mutwaakil.a2021_dev_014
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 
 class GameActivity : AppCompatActivity() {
 
@@ -41,6 +43,91 @@ class GameActivity : AppCompatActivity() {
         startNewGameButton = findViewById(R.id.start_new_game_button)
         player1Points = findViewById(R.id.player_one_score)
         player2Points = findViewById(R.id.player_two_score)
-        
+
+    }
+
+
+
+    
+    private fun updatePoints() {
+        player1Points.text = "Player X Points: ${gameManager.player1Points}"
+        player2Points.text = "Player O Points: ${gameManager.player2Points}"
+    }
+
+
+    private fun resetboxes() {
+        one.text = ""
+        two.text = ""
+        three.text = ""
+        four.text = ""
+        five.text = ""
+        six.text = ""
+        seven.text = ""
+        eight.text = ""
+        nine.text = ""
+        one.background = null
+        two.background = null
+        three.background = null
+        four.background = null
+        five.background = null
+        six.background = null
+        seven.background = null
+        eight.background = null
+        nine.background = null
+        one.isEnabled = true
+        two.isEnabled = true
+        three.isEnabled = true
+        four.isEnabled = true
+        five.isEnabled = true
+        six.isEnabled = true
+        seven.isEnabled = true
+        eight.isEnabled = true
+        nine.isEnabled = true
+    }
+
+    private fun onBoxClicked(box: TextView, position: Position) {
+        if (box.text.isEmpty()) {
+            box.text = gameManager.currentPlayerMark
+            val winningLine = gameManager.makeMove(position)
+            if (winningLine != null) {
+                updatePoints()
+                disableBoxes()
+                startNewGameButton.visibility = View.VISIBLE
+                showWinner(winningLine)
+            }
+        }
+    }
+
+    private fun disableBoxes() {
+        one.isEnabled = false
+        two.isEnabled = false
+        three.isEnabled = false
+        four.isEnabled = false
+        five.isEnabled = false
+        six.isEnabled = false
+        seven.isEnabled = false
+        eight.isEnabled = false
+        nine.isEnabled = false
+    }
+
+    private fun showWinner(winningLine: WinningLine) {
+        val (winningBoxes, background) = when (winningLine) {
+            WinningLine.ROW_0 -> Pair(listOf(one, two, three), R.drawable.horizontal_line)
+            WinningLine.ROW_1 -> Pair(listOf(four, five, six), R.drawable.horizontal_line)
+            WinningLine.ROW_2 -> Pair(listOf(seven, eight, nine), R.drawable.horizontal_line)
+            WinningLine.COLUMN_0 -> Pair(listOf(one, four, seven), R.drawable.vertical_line)
+            WinningLine.COLUMN_1 -> Pair(listOf(two, five, eight), R.drawable.vertical_line)
+            WinningLine.COLUMN_2 -> Pair(listOf(three, six, nine), R.drawable.vertical_line)
+            WinningLine.DIAGONAL_LEFT -> Pair(listOf(one, five, nine),
+                R.drawable.left_diagonal_line
+            )
+            WinningLine.DIAGONAL_RIGHT -> Pair(listOf(three, five, seven),
+                R.drawable.right_diagonal_line
+            )
+        }
+
+        winningBoxes.forEach { box ->
+            box.background = ContextCompat.getDrawable(GameActivity@ this, background)
+        }
     }
 }
