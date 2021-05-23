@@ -44,11 +44,32 @@ class GameActivity : AppCompatActivity() {
         player1Points = findViewById(R.id.player_one_score)
         player2Points = findViewById(R.id.player_two_score)
 
+
+
+        one.setOnClickListener { onBoxClicked(one, Position(0, 0)) }
+        two.setOnClickListener { onBoxClicked(two, Position(0, 1)) }
+        three.setOnClickListener { onBoxClicked(three, Position(0, 2)) }
+        four.setOnClickListener { onBoxClicked(four, Position(1, 0)) }
+        five.setOnClickListener { onBoxClicked(five, Position(1, 1)) }
+        six.setOnClickListener { onBoxClicked(six, Position(1, 2)) }
+        seven.setOnClickListener { onBoxClicked(seven, Position(2, 0)) }
+        eight.setOnClickListener { onBoxClicked(eight, Position(2, 1)) }
+        nine.setOnClickListener { onBoxClicked(nine, Position(2, 2)) }
+
+        startNewGameButton.setOnClickListener {
+            startNewGameButton.visibility = View.GONE
+            gameManager.reset()
+            resetboxes()
+        }
+
+        updatePoints()
     }
 
 
 
-    
+
+
+
     private fun updatePoints() {
         player1Points.text = "Player X Points: ${gameManager.player1Points}"
         player2Points.text = "Player O Points: ${gameManager.player2Points}"
